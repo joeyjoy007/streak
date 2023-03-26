@@ -4,6 +4,8 @@ import Splash from '../components/splash/Splash';
 import {color} from '../helpers/colors';
 import Dashboard from '../components/dashboard/Dashboard';
 import {navigationKey} from '../helpers/navigations';
+import Reanimatesd from '../components/dashboard/Reanimatesd';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -12,6 +14,7 @@ const Navigation: React.FC = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
+        animation: 'slide_from_right'
       }}>
       <Stack.Screen
         options={{
@@ -21,6 +24,7 @@ const Navigation: React.FC = () => {
         component={Splash}
       />
       <Stack.Screen name={navigationKey.DASHBOARD} component={Dashboard} />
+      {/* <Stack.Screen name={"Reani"} component={Reanimatesd} /> */}
     </Stack.Navigator>
   );
 };

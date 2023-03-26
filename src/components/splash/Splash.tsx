@@ -16,6 +16,7 @@ const Splash: React.FC<any> = ({navigation}) => {
         setTimeout(() => {
           if (userToken !== null) {
             navigation.navigate(navigationKey.DASHBOARD);
+            // navigation.navigate('Reani');
           } else {
             navigation.navigate(navigationKey.SPLASH);
           }

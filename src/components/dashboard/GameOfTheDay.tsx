@@ -1,4 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {
   AI,
@@ -21,9 +27,32 @@ import {
 } from '../../helpers/styles';
 import NormalText from '../../helpers/texts/NormalText';
 import {color, gameOfTheDayColors} from '../../helpers/colors';
+import axios from 'axios';
 
 const GameOfTheDay = () => {
-  const number = [1, 2, 3, 4];
+  const number = '1234';
+  const splitedNumber = number.split('');
+  const [numbers, setNumbers] = React.useState(splitedNumber);
+  const [loading, setLoading] = React.useState(false);
+  const getNumber = async () => {
+    try {
+      setLoading(true);
+      const getPin = await axios
+        .get('https://production.streakcard.click/test/getlist')
+        .then((response: any) => {
+          console.log('response ==> ', response.data);
+          setLoading(false);
+          setNumbers(response.data.data.split(''));
+        })
+        .catch((err: any) => {
+          setLoading(false);
+          console.log('Error occured ==> ', err.message);
+        });
+    } catch (error: any) {
+      setLoading(false);
+      console.log('Error occured ==> ', error.message);
+    }
+  };
 
   return (
     <View
@@ -55,7 +84,7 @@ const GameOfTheDay = () => {
               JC('space-between'),
               {borderColor: gameOfTheDayColors.numberBackground},
             ]}>
-            {number.map((e: number) => {
+            {numbers?.map((e: number) => {
               return (
                 <View
                   key={e}
@@ -86,6 +115,7 @@ const GameOfTheDay = () => {
             </Text>
           </View>
           <TouchableOpacity
+            onPress={() => getNumber()}
             style={[
               AI('center'),
               MT(15),
@@ -100,7 +130,11 @@ const GameOfTheDay = () => {
                 color: color.white,
                 fontFamily: FontFamily.Barlow_Semi_bold,
               }}>
-              Try your luck
+              {loading ? (
+                <ActivityIndicator color={color.white} />
+              ) : (
+                'Try your luck'
+              )}
             </Text>
           </TouchableOpacity>
         </View>
