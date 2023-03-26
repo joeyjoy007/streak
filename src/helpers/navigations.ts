@@ -1,4 +1,4 @@
 export const navigationKey = {
-    SPLASH:'Splash',
-    DASHBOARD:'dashboard'
-}
+  SPLASH: 'Splash',
+  DASHBOARD: 'Dashboard',
+};
