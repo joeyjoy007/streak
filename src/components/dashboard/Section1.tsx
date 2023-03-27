@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   AI,
   AS,
@@ -34,7 +34,47 @@ import {globalHeight, globalWidth} from '../../helpers/dimensions';
 import {cardSectionColors, color} from '../../helpers/colors';
 import * as Animatable from 'react-native-animatable';
 
-const Section1 = () => {
+interface ISection {
+  showTiming: number;
+  setShowtiming: any;
+  AnimationRef1: any;
+  setShowTiming1: any;
+  showTiming1: number;
+}
+
+const Section1:React.FC<ISection> = ({
+  showTiming,
+  setShowTiming,
+  AnimationRef1,
+  setShowTiming1,
+  showTiming1,
+}) => {
+  const AnimationRef = useRef(null);
+
+  const _onPress_1 = () => {
+    if (AnimationRef) {
+      setTimeout(() => {
+        setShowTiming(1);
+        AnimationRef.current?.zoomIn().then((res: any) => {
+          _onPress_2();
+        });
+        // _onPress_2()
+      }, 300);
+      // console.log('ANI',AnimationRef.current.zoomIn());
+    }
+  };
+
+  const _onPress_2 = () => {
+    if (AnimationRef1) {
+      console.log('OKAYY HELLO');
+      setTimeout(() => {
+        setShowTiming1(2);
+        AnimationRef1.current?.fadeInUp();
+      }, 230);
+      // console.log('ANI',AnimationRef.current.zoomIn());
+    }
+  };
+
   return (
     <View style={[JC('space-between'), FD('column')]}>
       <ImageBackground
@@ -53,9 +93,14 @@ const Section1 = () => {
         <View style={[P(12)]}>
           {/* new */}
           <Animatable.View
-            duration={1200}
+            onAnimationEnd={(endState: any) => {
+              if (endState.finished) {
+                _onPress_1();
+              }
+            }}
+            duration={600}
             delay={0}
-            animation="fadeIn"
+            animation="zoomIn"
             easing="ease-in">
             <View style={[BR(10)]}>
               <View
@@ -134,65 +179,78 @@ const Section1 = () => {
             </View>
           </Animatable.View>
           {/* for scan */}
-          <Animatable.View
-            duration={500}
-            delay={0}
-            animation="fadeIn"
-            easing={'ease-in'}>
-            <View style={[FD('row'), JC('space-between'), MT(20)]}>
-              <TouchableOpacity
-                style={[
-                  P(5),
-                  PH(45),
-                  BR(9),
-                  BG('#650f57'),
-                  FD('row'),
-                  JC('space-between'),
-                  AI('center'),
-                ]}>
-                <Text
-                  style={{
-                    color: color.white,
-                    fontFamily: FontFamily.Barlow_Bold,
-                  }}>
-                  scan code
-                </Text>
-                <Image
-                  style={[ML(5)]}
-                  source={require('../../helpers/dashboardImages/Images/scan.png')}
-                />
-              </TouchableOpacity>
 
-              
-              <TouchableOpacity
-                style={[
-                  P(5),
-                  PH(18),
-                  BR(9),
-                  BG('#650F5C'),
-                  FD('row'),
-                  JC('space-between'),
-                  AI('center'),
-                ]}>
-                <Image
-                  source={require('../../helpers/dashboardImages/Images/arrow.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  P(8),
-                  BR(9),
-                  BG('#650F5C'),
-                  FD('row'),
-                  JC('space-between'),
-                  AI('center'),
-                ]}>
-                <Image
-                  source={require('../../helpers/dashboardImages/Images/dots.png')}
-                />
-              </TouchableOpacity>
-            </View>
-          </Animatable.View>
+          <View style={[FD('row'), JC('space-between'), MT(20)]}>
+            <Animatable.View
+              onAnimationEnd={(endState: any) => {
+                console.log('Endstate', endState);
+                if (endState.finished) {
+                  _onPress_2();
+                }
+              }}
+              ref={AnimationRef}
+              duration={600}
+              delay={0}
+              // animation="zoomIn"
+              easing={'ease-in'}>
+              {showTiming === 1 ? (
+                <TouchableOpacity
+                  style={[
+                    P(5),
+                    PH(45),
+                    BR(9),
+                    BG('#650f57'),
+                    FD('row'),
+                    JC('space-between'),
+                    AI('center'),
+                  ]}>
+                  <Text
+                    style={{
+                      color: color.white,
+                      fontFamily: FontFamily.Barlow_Bold,
+                    }}>
+                    scan code
+                  </Text>
+                  <Image
+                    style={[ML(5)]}
+                    source={require('../../helpers/dashboardImages/Images/scan.png')}
+                  />
+                </TouchableOpacity>
+              ) : null}
+            </Animatable.View>
+
+            {showTiming1 === 2 ? (
+              <>
+                <TouchableOpacity
+                  style={[
+                    P(5),
+                    PH(18),
+                    BR(9),
+                    BG('#650F5C'),
+                    FD('row'),
+                    JC('space-between'),
+                    AI('center'),
+                  ]}>
+                  <Image
+                    source={require('../../helpers/dashboardImages/Images/arrow.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    P(8),
+                    BR(9),
+                    BG('#650F5C'),
+                    FD('row'),
+                    JC('space-between'),
+                    AI('center'),
+                  ]}>
+                  <Image
+                    source={require('../../helpers/dashboardImages/Images/dots.png')}
+                  />
+                </TouchableOpacity>
+              </>
+            ) : null}
+          </View>
         </View>
       </ImageBackground>
     </View>

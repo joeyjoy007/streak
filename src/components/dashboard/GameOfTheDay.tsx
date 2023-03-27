@@ -84,10 +84,10 @@ const GameOfTheDay = () => {
               JC('space-between'),
               {borderColor: gameOfTheDayColors.numberBackground},
             ]}>
-            {numbers?.map((e: number) => {
+            {numbers?.map((e: number,i: number) => {
               return (
                 <View
-                  key={e}
+                  key={i}
                   style={[
                     MT(18),
                     P(10),

@@ -15,13 +15,14 @@ const Splash: React.FC<any> = ({navigation}) => {
       try {
         setTimeout(() => {
           if (userToken !== null) {
-            navigation.navigate(navigationKey.DASHBOARD);
-            // navigation.navigate('Reani');
+            navigation.navigate(navigationKey.DASHBOARD,{
+              aTiming:0
+            });
           } else {
             navigation.navigate(navigationKey.SPLASH);
           }
         }, 3000);
-      } catch (error) {
+      } catch (error: any) {
         console.log('Splash error ==>', error);
       }
     });
